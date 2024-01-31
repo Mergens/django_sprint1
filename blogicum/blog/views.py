@@ -44,18 +44,17 @@ posts = [
     },
 ]
 
-posts = sorted(posts, key=lambda x: x['id'], reverse=True)
-posts_dict = {post['id']: post for post in posts}
-
 
 def index(request):
     template = 'blog/index.html'
-    context = {'post_list': posts}
+    posts_sorted = sorted(posts, key=lambda x: x['id'], reverse=True)
+    context = {'post_list': posts_sorted}
     return render(request, template, context)
 
 
 def post_detail(request, post_id):
     template = 'blog/detail.html'
+    posts_dict = {post['id']: post for post in posts}
     post = posts_dict.get(post_id)
     if post is None:
         raise Http404("Такой пост не обнаружен")
