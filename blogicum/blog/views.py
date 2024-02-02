@@ -46,12 +46,12 @@ posts = [
 ]
 
 POSTS_DATA = {post['id']: post for post in posts}
+posts_rev = list(posts)
+posts_rev.reverse()
 
 
 def index(request):
     template = 'blog/index.html'
-    posts_rev = list(posts)
-    posts_rev.reverse()
     context = {'post_list': posts_rev}
     return render(request, template, context)
 
