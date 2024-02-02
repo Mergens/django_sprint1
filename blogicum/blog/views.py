@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import Http404
-from django.core.exceptions import ObjectDoesNotExist
+
 
 posts = [
     {
@@ -50,16 +50,18 @@ POSTS_DATA = {post['id']: post for post in posts}
 
 def index(request):
     template = 'blog/index.html'
-    context = {'post_list': list(reversed(posts))}
+    posts_rev = list(posts)
+    posts_rev.reverse()
+    context = {'post_list': posts_rev}
     return render(request, template, context)
 
 
 def post_detail(request, post_id):
     template = 'blog/detail.html'
-    try:
-        post = POSTS_DATA.get(post_id)
-    except ObjectDoesNotExist:
+    post = POSTS_DATA.get(post_id)
+    if post is None:
         raise Http404("Такой пост не обнаружен")
+
     context = {'post': post}
     return render(request, template, context)
 
